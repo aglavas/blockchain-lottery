@@ -32,6 +32,8 @@ contract Lottery {
       uint winner = randomIndex(count);
       players[winner].transfer((size * count) * (100 - lotteryFee) / 100);
       currentStatus = Status.IDLE;
+      count = 0;
+      size = 0;
       delete players;
     }
   }
@@ -41,7 +43,13 @@ contract Lottery {
       players[i].transfer(size);
     }
     delete players;
+    count = 0;
+    size = 0;
     currentStatus = Status.IDLE;
+  }
+
+  function getPlayers() public view returns(address payable[] memory) {
+    return players;
   }
 
   function randomIndex(uint mod) internal view returns(uint) {
